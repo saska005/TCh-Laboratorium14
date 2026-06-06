@@ -1,0 +1,64 @@
+services:
+  # 1. Baza danych MySQL
+  db:
+    image: mysql:8.0
+    container_name: lemp_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: testowa_baza
+      MYSQL_USER: lemp_user
+      MYSQL_PASSWORD: lemp_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend #
+
+  # 2. Serwer PHP (PHP-FPM)
+  php:
+    image: php:8.2-fpm
+    container_name: lemp_php
+    restart: unless-stopped
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - backend 
+
+  # 3. Serwer WWW Nginx
+  nginx:
+    image: nginx:stable-alpine
+    container_name: lemp_nginx
+    restart: unless-stopped
+    ports:
+      - "4001:80" 
+    volumes:
+      - ./src:/var/www/html 
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - frontend 
+      - backend  
+
+  # 4. Panel zarządzania phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: lemp_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "6001:80" 
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root_password
+    depends_on:
+      - db
+    networks:
+      - frontend
+      - backend
+
+volumes:
+  mysql_data:
+
+networks:
+  frontend:
+  backend:
