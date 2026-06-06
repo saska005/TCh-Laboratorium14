@@ -40,7 +40,7 @@ Główny plik definiujący cztery usługi:
 **Dowód działania serwera LEMP pod adresem http://localhost:4001**
 ![Zrzut ekranu](zrzuty_ekranu/3.png)
 
-**Widok po zalogowaniu się do bazy pod adresem http://localhost:6001**
+**Widok po zalogowaniu się loginem i hasłem do bazy pod adresem http://localhost:6001**
 ![Zrzut ekranu](zrzuty_ekranu/4.png)
 
 **Widok po inicjalizacji nowej testowej bazy danych pod adresem http://localhost:6001**
